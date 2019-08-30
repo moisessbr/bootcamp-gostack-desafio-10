@@ -14,7 +14,7 @@ import {
   SubscribeButton,
 } from './styles';
 
-export default function Meetup({ data, onSubscribe, subs }) {
+export default function Meetup({ data, onSubscribe, onCancel, subs, cancel }) {
   const { banner_id, title, date, location, organizer, id } = data;
 
   const past = isBefore(parseISO(date), new Date());
@@ -52,9 +52,13 @@ export default function Meetup({ data, onSubscribe, subs }) {
         enabled={past ? !past : !subscribed}
         subscribed={subscribed}
         past={past}
-        onPress={onSubscribe}
+        onPress={cancel ? onCancel : onSubscribe}
       >
-        {subscribed ? 'Já inscrito' : 'Realizar inscrição'}
+        {subscribed
+          ? 'Já inscrito'
+          : cancel
+          ? 'Cancelar inscrição'
+          : 'Realizar inscrição'}
       </SubscribeButton>
     </Container>
   );

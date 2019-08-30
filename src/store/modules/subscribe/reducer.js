@@ -21,11 +21,11 @@ export default function subscribe(state = INITIAL_STATE, action) {
         break;
       }
       case '@subscribe/CANCEL_SUBSCRIBE_REQUEST': {
-        draft.loading = false;
+        draft.loading = true;
         break;
       }
       case '@subscribe/CANCEL_SUBSCRIBE_SUCCESS': {
-        draft.loading = true;
+        draft.loading = false;
         break;
       }
       case '@subscribe/SUBSCRIBE_FAILURE': {

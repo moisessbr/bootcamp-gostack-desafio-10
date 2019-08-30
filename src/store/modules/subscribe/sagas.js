@@ -9,13 +9,12 @@ import {
 import api from '~/services/api';
 
 export function* subscribeCancelRequest({ payload }) {
-  const { id, navigation } = payload;
+  const { id, navigation, refresh } = payload;
   try {
     yield call(api.delete, `subscribe/${id}`);
-
     yield put(meetupCancelSubscribeSuccess());
     Alert.alert('Inscrição', 'Inscrição cancelada com sucesso!');
-    navigation.navigate('Subscriptions');
+    refresh();
   } catch (error) {
     Alert.alert('Erro', 'Ocorreu um erro ao cancelar sua inscrição!');
     yield put(subscribeFailure());

@@ -35,6 +35,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 'off',
     "react/static-property-placement": 'off',
     'react/state-in-constructor': 'off',
+    "no-nested-ternary": 'off',
   },
   settings: {
     "import/resolver": {

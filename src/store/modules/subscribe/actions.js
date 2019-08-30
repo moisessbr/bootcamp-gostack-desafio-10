@@ -11,10 +11,10 @@ export function meetupSubscribeSuccess() {
   };
 }
 
-export function meetupCancelSubscribeRequest(id, navigation) {
+export function meetupCancelSubscribeRequest(id, refresh, navigation) {
   return {
     type: '@subscribe/CANCEL_SUBSCRIBE_REQUEST',
-    payload: { id, navigation },
+    payload: { id, refresh, navigation },
   };
 }
 
