@@ -1,6 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { format, parseISO, subHours } from 'date-fns';
+import { format, parseISO, subHours, isBefore } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import banner from '~/assets/banner.png';
 import {
@@ -14,8 +14,12 @@ import {
   SubscribeButton,
 } from './styles';
 
-export default function Meetup({ data }) {
-  const { banner_id, title, date, location, organizer } = data;
+export default function Meetup({ data, onSubscribe, subs }) {
+  const { banner_id, title, date, location, organizer, id } = data;
+
+  const past = isBefore(parseISO(date), new Date());
+
+  const subscribed = subs.includes(id);
 
   const formattedDate = format(
     subHours(parseISO(date), 3),
@@ -44,7 +48,14 @@ export default function Meetup({ data }) {
           <DataText>{organizer.name}</DataText>
         </MeetupDataDetail>
       </MeetupData>
-      <SubscribeButton>Realizar inscrição</SubscribeButton>
+      <SubscribeButton
+        enabled={past ? !past : !subscribed}
+        subscribed={subscribed}
+        past={past}
+        onPress={onSubscribe}
+      >
+        {subscribed ? 'Já inscrito' : 'Realizar inscrição'}
+      </SubscribeButton>
     </Container>
   );
 }

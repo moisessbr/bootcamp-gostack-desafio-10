@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { addDays, subDays, format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import api from '~/services/api';
 import Header from '~/components/Header';
@@ -9,24 +9,46 @@ import Background from '~/components/Background';
 import Meetup from '~/components/Meetup';
 import { Container, DateSelector, SelectedDate, MeetupList } from './styles';
 
-export default function Dashboard() {
+export default function Dashboard({ navigation }) {
   const [meetups, setMeetups] = useState([]);
+  const [subscriptions, setSubscriptions] = useState([]);
   const [date, setDate] = useState(new Date());
   const [page, setPage] = useState(2);
   const [refreshing, setRefreshing] = useState(false);
   const [load, setLoad] = useState(true);
+  const [loading, setLoading] = useState(false);
+
+  const list = useRef();
 
   const dateFormatted = format(date, "dd 'de' MMMM", { locale: pt });
 
   async function loadAppointments() {
+    setLoading(true);
     const response = await api.get('meetups', {
       params: {
         date,
       },
     });
     setMeetups(response.data);
-    console.tron.log(response);
+    setLoading(false);
   }
+
+  useEffect(() => {
+    async function loadSubscriptions() {
+      const response = await api.get('subscribe');
+
+      const subs = response.data.map(m => m.meetup_id);
+
+      setSubscriptions(subs);
+    }
+
+    loadSubscriptions();
+  }, []);
+
+  useEffect(() => {
+    loadAppointments();
+    list.current.scrollToOffset({ offset: 0, animated: true });
+  }, [date]); //eslint-disable-line
 
   async function loadMore() {
     if (!load) {
@@ -47,9 +69,11 @@ export default function Dashboard() {
   }
 
   function refreshList() {
+    setRefreshing(true);
     loadAppointments();
     setPage(2);
     setLoad(true);
+    setRefreshing(false);
   }
 
   function addDay() {
@@ -64,9 +88,11 @@ export default function Dashboard() {
     setLoad(true);
   }
 
-  useEffect(() => {
-    loadAppointments();
-  }, [date]); //eslint-disable-line
+  function handleSubscribe(meetup) {
+    navigation.navigate('Subscribe', {
+      meetup,
+    });
+  }
 
   return (
     <Background>
@@ -81,15 +107,26 @@ export default function Dashboard() {
             <Icon name="keyboard-arrow-right" size={30} color="#fff" />
           </TouchableOpacity>
         </DateSelector>
-        <MeetupList
-          onRefresh={() => refreshList()}
-          refreshing={refreshing}
-          onEndReachedThreshold={0.1}
-          onEndReached={() => loadMore()}
-          data={meetups}
-          keyExtractor={item => String(item.id)}
-          renderItem={({ item }) => <Meetup data={item} />}
-        />
+        {loading ? (
+          <ActivityIndicator size="large" color="#fff" />
+        ) : (
+          <MeetupList
+            onRefresh={() => refreshList()}
+            refreshing={refreshing}
+            onEndReachedThreshold={0.1}
+            onEndReached={() => loadMore()}
+            data={meetups}
+            ref={list}
+            keyExtractor={item => String(item.id)}
+            renderItem={({ item }) => (
+              <Meetup
+                data={item}
+                onSubscribe={() => handleSubscribe(item)}
+                subs={subscriptions}
+              />
+            )}
+          />
+        )}
       </Container>
     </Background>
   );

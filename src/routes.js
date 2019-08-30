@@ -2,6 +2,7 @@ import {
   createAppContainer,
   createSwitchNavigator,
   createBottomTabNavigator,
+  createStackNavigator,
 } from 'react-navigation';
 
 import SignIn from '~/Pages/SignIn';
@@ -10,6 +11,7 @@ import SignUp from '~/Pages/SignUp';
 import Dashboard from '~/Pages/Dashboard';
 import Profile from '~/Pages/Profile';
 import Subscriptions from '~/Pages/Subscriptions';
+import Subscribe from '~/Pages/Subscribe';
 
 export default (isSigned = false) =>
   createAppContainer(
@@ -19,6 +21,20 @@ export default (isSigned = false) =>
           SignIn,
           SignUp,
         }),
+        Confirm: createStackNavigator(
+          {
+            Subscribe,
+          },
+          {
+            defaultNavigationOptions: {
+              headerTransparent: true,
+              headerTintColor: '#fff',
+              headerLeftContainerStyle: {
+                marginLeft: 20,
+              },
+            },
+          }
+        ),
         App: createBottomTabNavigator(
           {
             Dashboard,

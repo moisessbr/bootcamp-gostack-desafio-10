@@ -4,9 +4,8 @@ import Button from '~/components/Button';
 
 const deviceWidth = Dimensions.get('window').width;
 
-export const Container = styled.View`
-  justify-content: center;
-  align-items: center;
+export const Container = styled.SafeAreaView`
+  flex: 1;
   border-radius: 4px;
   background: #fff;
   margin: 10px 20px;
@@ -26,6 +25,13 @@ export const Banner = styled.Image`
   width: ${deviceWidth - 40};
 `;
 
+export const MeetupData = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+})`
+  flex: 1;
+  margin: 10px 20px;
+`;
+
 export const MeetupTitle = styled.Text`
   font-size: 18px;
   line-height: 25px;
@@ -34,14 +40,10 @@ export const MeetupTitle = styled.Text`
   padding-bottom: 5px;
 `;
 
-export const MeetupData = styled.View`
-  align-self: stretch;
-  margin: 10px 20px;
-`;
 export const MeetupDataDetail = styled.View`
   flex-direction: row;
   align-items: center;
-  flex: 1;
+  padding: 5px 0;
 `;
 export const DataText = styled.Text`
   font-size: 14px;
@@ -52,6 +54,4 @@ export const DataText = styled.Text`
 export const SubscribeButton = styled(Button)`
   align-self: stretch;
   margin: 0 20px 20px;
-  opacity: ${props => (props.subscribed ? 0.6 : 1)};
-  background: ${props => (props.past ? '#ccc' : '#f94d6a')};
 `;
