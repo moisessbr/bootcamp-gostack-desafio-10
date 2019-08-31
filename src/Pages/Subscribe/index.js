@@ -1,5 +1,6 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 import { TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { format, parseISO, subHours } from 'date-fns';
@@ -84,3 +85,8 @@ Subscribe.navigationOptions = ({ navigation }) => ({
     </TouchableOpacity>
   ),
 });
+
+Subscribe.propTypes = {
+  navigation: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+    .isRequired,
+};

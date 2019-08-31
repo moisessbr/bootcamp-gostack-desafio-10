@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { addDays, subDays, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { TouchableOpacity, ActivityIndicator } from 'react-native';
@@ -7,7 +8,13 @@ import api from '~/services/api';
 import Header from '~/components/Header';
 import Background from '~/components/Background';
 import Meetup from '~/components/Meetup';
-import { Container, DateSelector, SelectedDate, MeetupList } from './styles';
+import {
+  Container,
+  DateSelector,
+  SelectedDate,
+  MeetupList,
+  EmptyList,
+} from './styles';
 
 export default function Dashboard({ navigation }) {
   const [meetups, setMeetups] = useState([]);
@@ -127,6 +134,9 @@ export default function Dashboard({ navigation }) {
                 subs={subscriptions}
               />
             )}
+            ListEmptyComponent={
+              <EmptyList>Nesta data não há meetups.</EmptyList>
+            }
           />
         )}
       </Container>
@@ -134,9 +144,20 @@ export default function Dashboard({ navigation }) {
   );
 }
 
+function tabBarIcon({ tintColor }) {
+  return <Icon name="format-list-bulleted" size={20} color={tintColor} />;
+}
+
 Dashboard.navigationOptions = {
   tabBarLabel: 'Meetups',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="format-list-bulleted" size={20} color={tintColor} />
-  ),
+  tabBarIcon,
+};
+
+Dashboard.propTypes = {
+  navigation: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+    .isRequired,
+};
+
+tabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
 };

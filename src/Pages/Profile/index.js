@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import { updateProfileRequest } from '~/store/modules/user/actions';
 import { signOut } from '~/store/modules/auth/actions';
-
 import Background from '~/components/Background';
 import Header from '~/components/Header';
 import {
@@ -17,7 +17,7 @@ import {
   LogoutButton,
 } from './styles';
 
-export default function Profile({ navigation }) {
+export default function Profile() {
   const dispatch = useDispatch();
 
   const loading = useSelector(state => state.auth.loading);
@@ -134,9 +134,15 @@ export default function Profile({ navigation }) {
   );
 }
 
+function tabBarIcon({ tintColor }) {
+  return <Icon name="person" size={20} color={tintColor} />;
+}
+
 Profile.navigationOptions = {
   tabBarLabel: 'Meu perfil',
-  tabBarIcon: ({ tintColor }) => (
-    <Icon name="person" size={20} color={tintColor} />
-  ),
+  tabBarIcon,
+};
+
+tabBarIcon.propTypes = {
+  tintColor: PropTypes.string.isRequired,
 };

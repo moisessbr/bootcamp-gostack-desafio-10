@@ -22,3 +22,10 @@ export const SelectedDate = styled.Text`
 export const MeetupList = styled.FlatList.attrs({
   showsVerticalScrollIndicator: false,
 })``;
+
+export const EmptyList = styled.Text`
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  align-self: center;
+`;

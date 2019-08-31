@@ -1,5 +1,6 @@
 import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import PropTypes from 'prop-types';
 import { format, parseISO, subHours, isBefore } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import banner from '~/assets/banner.png';
@@ -63,3 +64,18 @@ export default function Meetup({ data, onSubscribe, onCancel, subs, cancel }) {
     </Container>
   );
 }
+
+Meetup.propTypes = {
+  data: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
+  onSubscribe: PropTypes.func,
+  onCancel: PropTypes.func,
+  subs: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
+  cancel: PropTypes.bool,
+};
+
+Meetup.defaultProps = {
+  onSubscribe: PropTypes.func,
+  onCancel: PropTypes.func,
+  subs: PropTypes.array,
+  cancel: false,
+};

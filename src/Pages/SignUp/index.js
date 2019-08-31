@@ -1,5 +1,6 @@
 import React, { useRef, useState } from 'react';
 import * as Yup from 'yup';
+import PropTypes from 'prop-types';
 
 import { Alert, Image } from 'react-native';
 
@@ -109,3 +110,8 @@ export default function SignUp({ navigation }) {
     </Background>
   );
 }
+
+SignUp.propTypes = {
+  navigation: PropTypes.oneOfType([PropTypes.object, PropTypes.func])
+    .isRequired,
+};
