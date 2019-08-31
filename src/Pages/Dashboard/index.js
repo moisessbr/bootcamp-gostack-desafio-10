@@ -12,7 +12,7 @@ import { Container, DateSelector, SelectedDate, MeetupList } from './styles';
 export default function Dashboard({ navigation }) {
   const [meetups, setMeetups] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
-  const [date, setDate] = useState(subHours(new Date(), 3));
+  const [date, setDate] = useState(new Date());
   const [page, setPage] = useState(2);
   const [refreshing, setRefreshing] = useState(false);
   const [load, setLoad] = useState(true);
@@ -20,7 +20,9 @@ export default function Dashboard({ navigation }) {
 
   const list = useRef();
 
-  const dateFormatted = format(date, "dd 'de' MMMM", { locale: pt });
+  const dateFormatted = format(subHours(date, 3), "dd 'de' MMMM", {
+    locale: pt,
+  });
 
   async function loadAppointments() {
     setLoading(true);

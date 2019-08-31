@@ -14,6 +14,13 @@ export function* updateProfile({ payload }) {
       ...(rest.oldPassword ? rest : {}),
     };
 
+    if (profile.password) {
+      if (profile.password.length <= 5) {
+        Alert.alert('Senha', 'Sua senha deve ter pelo menos 6 digitos.');
+        throw new Error();
+      }
+    }
+
     const response = yield call(api.put, 'users', profile);
     Alert.alert('Sucesso', 'Perfil atualizado com sucesso!');
     yield put(updateProfileSuccess(response.data));

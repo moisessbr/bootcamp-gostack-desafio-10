@@ -35,7 +35,7 @@ export function setToken({ payload }) {
 
 export function* signUp({ payload }) {
   try {
-    const { name, email, password } = payload;
+    const { name, email, password, navigation } = payload;
 
     yield call(api.post, 'users', {
       name,
@@ -43,6 +43,7 @@ export function* signUp({ payload }) {
       password,
     });
     Alert.alert('Sucesso', 'Usuário criado com sucesso.');
+    navigation.navigate('SignIn');
   } catch (error) {
     Alert.alert('Falha no cadastro', 'Verifique seus dados e tente novamente!');
     yield put(signFailure());

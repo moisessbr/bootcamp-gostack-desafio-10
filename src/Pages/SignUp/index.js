@@ -1,7 +1,11 @@
 import React, { useRef, useState } from 'react';
+import * as Yup from 'yup';
+
+import { Alert, Image } from 'react-native';
+
 import { useDispatch, useSelector } from 'react-redux';
-import { Image } from 'react-native';
 import { signUpRequest } from '~/store/modules/auth/actions';
+
 import logo from '~/assets/logo.png';
 import Background from '~/components/Background';
 import {
@@ -25,8 +29,29 @@ export default function SignUp({ navigation }) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
-  function handleSubmit() {
-    dispatch(signUpRequest(name, email, password));
+  const schema = Yup.object().shape({
+    name: Yup.string()
+      .min(5, 'Digite um nome com ao menos 5 caracteres.')
+      .required('O nome é obrigatório'),
+    email: Yup.string()
+      .email('Digite um e-mail válido.')
+      .required('O email é obrigatório'),
+    password: Yup.string().min(6, 'Digite uma senha com 6 caracteres.'),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref('password')],
+      'A nova senha e a confirmação não são iguais. Corrija e tente novamente.'
+    ),
+  });
+
+  async function handleSubmit() {
+    const data = { name, email, password, confirmPassword };
+
+    try {
+      await schema.validate(data);
+      dispatch(signUpRequest(name, email, password, navigation));
+    } catch (err) {
+      Alert.alert('Erro', err.message);
+    }
   }
 
   return (

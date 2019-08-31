@@ -61,15 +61,13 @@ export default function Profile({ navigation }) {
 
   async function handleSubmit() {
     const data = { name, email, oldPassword, password, confirmPassword };
-    // dispatch(updateProfileRequest(data));
 
     try {
       await schema.validate(data);
+      dispatch(updateProfileRequest(data));
     } catch (err) {
       Alert.alert('Erro', err.message);
     }
-
-    // const verify = await schema.isValid(data);
   }
 
   return (
@@ -126,7 +124,7 @@ export default function Profile({ navigation }) {
             onChangeText={setConfirmPassword}
           />
           <SubmitButton loading={loading} onPress={handleSubmit}>
-            Criar conta
+            Salvar perfil
           </SubmitButton>
         </Form>
 
