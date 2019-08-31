@@ -10,7 +10,7 @@ Essa aplicação faz parte do desafio final do bootcamp utilizado para finaliza�
 
 O layout do projeto está anexado nesse repositório.
 
-#Minhas Alterações
+# Minhas Alterações
 
 Na tela de cadastro adicionei mais um campo para confirmar a senha antes de o cadastro ser efetuado.
 
