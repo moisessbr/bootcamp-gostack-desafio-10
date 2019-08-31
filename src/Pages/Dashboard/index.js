@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { addDays, subDays, format } from 'date-fns';
+import { addDays, subDays, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import { TouchableOpacity, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -12,7 +12,7 @@ import { Container, DateSelector, SelectedDate, MeetupList } from './styles';
 export default function Dashboard({ navigation }) {
   const [meetups, setMeetups] = useState([]);
   const [subscriptions, setSubscriptions] = useState([]);
-  const [date, setDate] = useState(new Date());
+  const [date, setDate] = useState(subHours(new Date(), 3));
   const [page, setPage] = useState(2);
   const [refreshing, setRefreshing] = useState(false);
   const [load, setLoad] = useState(true);
